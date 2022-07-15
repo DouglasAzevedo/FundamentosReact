@@ -1,12 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import './styles.css'
 
-import { Card } from '../../components/Card'
+import { Card, CardProps } from '../../components/Card'
+
+interface ProfileResponse {
+  name: string,
+  avatar_url: string,
+}
+
+interface User {
+  name: string,
+  avatar: string,
+}
 
 export function Home() {
-  const [studentName, setStudentName] = useState();
-  const [students, setStudents] = useState([]);
-  const [user, setUser] = useState({ name: '', avatar: '' });
+  const [studentName, setStudentName] = useState('');
+  const [students, setStudents] = useState<CardProps[]>([]); /*useState tipado para um array de CardProps*/
+  const [user, setUser] = useState<User>({} as User);
 
   function handleAddStudent() {
     const newStudent = {
@@ -25,7 +35,7 @@ export function Home() {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch('https://api.github.com/users/douglasazevedo');
-      const data = await response.json();
+      const data = await response.json() as ProfileResponse;
 
       console.log(data);
 
